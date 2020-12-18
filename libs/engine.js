@@ -49216,7 +49216,7 @@ class RenderingManager {
 	initScene(){
 		this.scene = new Scene();
 		this.scene.background = 0xCCCCCC;
-		this.scene.fog = new Fog(0xCCCCCC, 50, 480);
+		this.scene.fog = new Fog(0xCCCCCC, 50, 800);
 	}
 
 	initCamera(){
@@ -66324,6 +66324,8 @@ class TerrainLoader {
 		console.log(material);
 
 		var terrain = new Mesh( buffGeometry, material );
+		terrain.castShadow = true;
+        terrain.receiveShadow = true;
 
 		return terrain;
 	}
