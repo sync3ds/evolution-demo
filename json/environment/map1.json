@@ -1,0 +1,27 @@
+{
+
+	"objects": [
+		{
+			"name": "Terrain",
+			"uid": "terrain",
+			"type": "heightmap",
+			"path": "textures/terrain/map1",
+			"heightmap": "heightmap.bmp",
+			"texture": "texture.jpg"
+		}
+	],
+
+	"scene": {
+		"envMap": "unearthly-red-4k.hdr",
+		"backgroundMap": "night_sky",
+		"sunSettings": {
+			"intensity": 2.0,
+			"inclination": 1.06,
+			"azimuth": 0.38,
+			"skyColor": "#0e0e18",
+			"groundColor": "#000000",
+			"skyIntensity": 0.1
+		}
+	}
+
+}

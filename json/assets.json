@@ -1,0 +1,24 @@
+{
+
+	"places": [
+		{
+			"name": "Map 1",
+			"uid": "map1",
+			"reference": "environment/map1"
+		}
+	],
+
+	"creatures": [
+		{
+			"name": "Drow",
+			"uid": "drow",
+			"reference": "creatures/drow"
+		},
+		{
+			"name": "Orc",
+			"uid": "orc",
+			"reference": "creatures/orc"
+		}
+	]
+
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+
+		<title>Game Engine Demo</title>
+
+		<link type="text/css" rel="stylesheet" href="styles.css">
+	</head>
+
+	<body>
+
+		<div id="loading-screen" class="a">
+			<span>LOADING</span>
+		</div>
+
+		<div id="welcome-screen">
+			<h1>EVOLUTION</h1>
+			<p class="text-center">v 0.0.1</p>
+			<button id="play-game"><span>START</span></button>
+		</div>
+
+		<!--div id="window"></div-->
+
+		<script type="module">
+			import { GameEngine } from "./libs/engine.js";
+
+			let gameEngine = new GameEngine();
+			gameEngine.init();
+
+		</script>
+	</body>
+</html>
