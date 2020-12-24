@@ -46623,6 +46623,68 @@ if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
 }
 
+function hexToRgb(hex) {
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
+}
+
+function signedVolumeOfTriangle(p1, p2, p3) {
+	return p1.dot(p2.cross(p3)) / 6.0;
+}
+function getVolume(geometry) {
+	if (!geometry.isBufferGeometry) {
+		console.log("'geometry' must be an indexed or non-indexed buffer geometry");
+		return 0;
+	}
+	var isIndexed = geometry.index !== null;
+	let position = geometry.attributes.position;
+	let sum = 0;
+	let p1 = new Vector3(),
+		p2 = new Vector3(),
+		p3 = new Vector3();
+	if (!isIndexed) {
+		let faces = position.count / 3;
+		for (let i = 0; i < faces; i++) {
+			p1.fromBufferAttribute(position, i * 3 + 0);
+			p2.fromBufferAttribute(position, i * 3 + 1);
+			p3.fromBufferAttribute(position, i * 3 + 2);
+			sum += signedVolumeOfTriangle(p1, p2, p3);
+		}
+	} else {
+		let index = geometry.index;
+		let faces = index.count / 3;
+		for (let i = 0; i < faces; i++){
+			p1.fromBufferAttribute(position, index.array[i * 3 + 0]);
+			p2.fromBufferAttribute(position, index.array[i * 3 + 1]);
+			p3.fromBufferAttribute(position, index.array[i * 3 + 2]);
+			sum += signedVolumeOfTriangle(p1, p2, p3);
+		}
+	}
+	return sum;
+}
+
+function getSurfaceArea(geometry){
+	var pos = geometry.attributes.position;
+	var tri = new Triangle(); // for re-use
+	var a = new Vector3(); // for re-use
+	var b = new Vector3(); // for re-use
+	var c = new Vector3(); // for re-use
+	var faces = pos.count / 3;
+	var area = 0;
+	for (let i = 0; i < faces; i++){
+		a.fromBufferAttribute(pos, i * 3 + 0);
+		b.fromBufferAttribute(pos, i * 3 + 1);
+		c.fromBufferAttribute(pos, i * 3 + 2);
+		tri.set(a, b, c);
+		area += tri.getArea();
+	}
+	return area;
+}
+
 /**
  * @author alteredq / http://alteredqualia.com/
  * @author mr.doob / http://mrdoob.com/
@@ -46694,15 +46756,6 @@ var Detector = {
 	}
 
 };
-
-function hexToRgb(hex) {
-	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	return result ? {
-		r: parseInt(result[1], 16),
-		g: parseInt(result[2], 16),
-		b: parseInt(result[3], 16)
-	} : null;
-}
 
 /**
  * Based on "A Practical Analytic Model for Daylight"
@@ -91597,11 +91650,24 @@ class GameEngine {
 		this._log("Initializing level...");
 		this.UIManager._addPreloadMsg("Starting the awesomeness...");
 
-		//var geometry = new THREE.BoxBufferGeometry( 1, 2, 1 );
-		//var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-		//var cube = new THREE.Mesh( geometry, material );
-		//this.renderingManager.scene.add( cube );
-		//cube.position.set(2,1,2);
+		var geometry = new SphereBufferGeometry( 5, 32, 32 );
+		var material = new MeshBasicMaterial( {color: 0x00ff00} );
+		var sphere1 = new Mesh( geometry, material );
+		this.renderingManager.scene.add( sphere1 );
+		sphere1.position.set(0,50,0);
+		var geometry = new SphereBufferGeometry( 8, 32, 32 );
+		var material = new MeshBasicMaterial( {color: 0x00ff00} );
+		var sphere2 = new Mesh( geometry, material );
+		this.renderingManager.scene.add( sphere2 );
+		sphere2.position.set(0,50,20);
+
+		var vol1 = getVolume(sphere1.geometry);
+		var vol2 = getVolume(sphere2.geometry);
+		console.log(vol1, vol2);
+
+		var area1 = getSurfaceArea(sphere1.geometry);
+		var area2 = getSurfaceArea(sphere2.geometry);
+		console.log(area1, area2);
 
 		this.renderingManager.initLights();
 	}
