@@ -1,6 +1,15 @@
 {
 
-	"objects": [],
+	"objects": [
+		{
+			"name": "Terrain",
+			"uid": "terrain",
+			"type": "heightmap",
+			"path": "textures/terrain/map1",
+			"heightmap": "heightmap.bmp",
+			"texture": "texture.jpg"
+		}
+	],
 
 	"scene": {
 		"envMap": "unearthly-red-4k.hdr",
